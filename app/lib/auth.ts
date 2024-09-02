@@ -2,6 +2,7 @@ import prisma from "@/index";
 import { compare, hash } from "bcrypt-ts";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthOptions } from "next-auth";
+import { Gender } from "@prisma/client";
 
 export const auth: AuthOptions = {
   providers: [
@@ -10,6 +11,7 @@ export const auth: AuthOptions = {
       credentials: {
         email: { label: "email", type: "text", placeholder: "abc@example.com" },
         name: { label: "name", type: "text", placeholder: "John Doe" },
+        gender: { label: "gender", type: "text", placeholder: "Gender" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -23,15 +25,22 @@ export const auth: AuthOptions = {
           if (existingUser) throw new Error("Email already exists");
 
           const hashedPassword = await hash(credentials.password, 10);
+          const gender = credentials.gender as Gender;
           const user = await prisma.user.create({
             data: {
               name: credentials.name,
               email: credentials.email,
+              gender: gender,
               password: hashedPassword,
             },
           });
 
-          return { id: user.id.toString(), name: user.name, email: user.email };
+          return {
+            id: user.id.toString(),
+            name: user.name,
+            email: user.email,
+            gender: user.gender,
+          };
         } else {
           // Login case
           const user = await prisma.user.findUnique({
@@ -45,7 +54,12 @@ export const auth: AuthOptions = {
           );
           if (!isPasswordValid) throw new Error("Invalid password");
 
-          return { id: user.id.toString(), name: user.name, email: user.email };
+          return {
+            id: user.id.toString(),
+            name: user.name,
+            email: user.email,
+            gender: user.gender,
+          };
         }
       },
     }),

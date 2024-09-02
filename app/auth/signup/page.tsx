@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
@@ -17,13 +18,14 @@ export default function SignUp() {
         redirect: false,
         email,
         name,
+        gender,
         password,
       });
 
       if (result?.error) {
         setError(result.error);
       } else {
-        router.push("/"); // Redirect to home or any other page
+        router.push("/");
       }
     } catch (error) {
       setError("An error occurred. Please try again.");
@@ -48,6 +50,15 @@ export default function SignUp() {
           onChange={(e) => setName(e.target.value)}
           required
         />
+        <div>
+          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+            <option value="" disabled>
+              Select your gender
+            </option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
         <input
           type="password"
           placeholder="Password"
