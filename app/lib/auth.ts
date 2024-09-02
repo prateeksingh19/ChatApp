@@ -78,7 +78,7 @@ export const auth: AuthOptions = {
       name: "next-auth.session-token",
       options: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "strict",
         maxAge: 30 * 24 * 60 * 60, // expires after 30 days
       },
@@ -87,7 +87,7 @@ export const auth: AuthOptions = {
       name: "next-auth.csrf-token",
       options: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "strict",
         maxAge: 30 * 24 * 60 * 60, // expires after 30 days
       },
