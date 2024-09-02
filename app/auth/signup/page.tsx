@@ -1,18 +1,31 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function SignUp() {
+  const [check, setCheck] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
+  useEffect(() => {
+    if (password === confirmPassword && password !== "") {
+      setCheck(true);
+    } else {
+      setCheck(false);
+    }
+  }, [password, confirmPassword]);
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!check) {
+      setError("Passwords do not match. Please try again.");
+      return;
+    }
     try {
       const result = await signIn("credentials", {
         redirect: false,
@@ -64,6 +77,13 @@ export default function SignUp() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
         <button type="submit">Sign Up</button>

@@ -32,6 +32,7 @@ export const auth: AuthOptions = {
               email: credentials.email,
               gender: gender,
               password: hashedPassword,
+              profilePic: `https://avatar.iran.liara.run/username?username=${credentials.name}`,
             },
           });
 
