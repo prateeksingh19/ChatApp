@@ -1,8 +1,9 @@
 import prisma from "@/index";
 import { compare, hash } from "bcrypt-ts";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { AuthOptions } from "next-auth";
 
-export const auth = {
+export const auth: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
