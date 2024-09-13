@@ -13,12 +13,13 @@ export const auth: AuthOptions = {
         name: { label: "name", type: "text", placeholder: "John Doe" },
         gender: { label: "gender", type: "text", placeholder: "Gender" },
         password: { label: "Password", type: "password" },
+        type: { label: "Type", type: "text" }, // This could be "login" or "signup"
       },
       async authorize(credentials) {
         if (!credentials) return null;
 
-        if (credentials.name) {
-          // Signup case
+        // Signup case
+        if (credentials.type === "signup") {
           const existingUser = await prisma.user.findUnique({
             where: { email: credentials.email },
           });
@@ -42,26 +43,26 @@ export const auth: AuthOptions = {
             email: user.email,
             gender: user.gender,
           };
-        } else {
-          // Login case
-          const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
-          });
-          if (!user) throw new Error("No user found");
-
-          const isPasswordValid = await compare(
-            credentials.password,
-            user.password
-          );
-          if (!isPasswordValid) throw new Error("Invalid password");
-
-          return {
-            id: user.id.toString(),
-            name: user.name,
-            email: user.email,
-            gender: user.gender,
-          };
         }
+
+        // Login case
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+        if (!user) throw new Error("No user found");
+
+        const isPasswordValid = await compare(
+          credentials.password,
+          user.password
+        );
+        if (!isPasswordValid) throw new Error("Invalid password");
+
+        return {
+          id: user.id.toString(),
+          name: user.name,
+          email: user.email,
+          gender: user.gender,
+        };
       },
     }),
   ],
@@ -94,15 +95,17 @@ export const auth: AuthOptions = {
     },
   },
   callbacks: {
-    async session({ session, token }: any) {
+    async session({ session, token }) {
+      // Attach the user ID to the session
       if (token.id) {
-        session.user.id = token.id;
+        session.user.id = token.id; // Add user ID to the session
       }
       return session;
     },
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }) {
+      // Attach the user ID to the token if user object is available (during login)
       if (user) {
-        token.id = user.id;
+        token.id = user.id; // Assuming `user.id` is the DB user ID
       }
       return token;
     },

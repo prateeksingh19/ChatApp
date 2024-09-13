@@ -20,12 +20,16 @@ export default function SignUp() {
       setCheck(false);
     }
   }, [password, confirmPassword]);
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
     if (!check) {
       setError("Passwords do not match. Please try again.");
       return;
     }
+
     try {
       const result = await signIn("credentials", {
         redirect: false,
@@ -33,6 +37,7 @@ export default function SignUp() {
         name,
         gender,
         password,
+        type: "signup",
       });
 
       if (result?.error) {
@@ -41,7 +46,7 @@ export default function SignUp() {
         router.push("/");
       }
     } catch (error) {
-      setError("An error occurred. Please try again.");
+      setError("An error occurred during sign up. Please try again.");
     }
   };
 
@@ -64,7 +69,11 @@ export default function SignUp() {
           required
         />
         <div>
-          <select value={gender} onChange={(e) => setGender(e.target.value)}>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            required
+          >
             <option value="" disabled>
               Select your gender
             </option>
@@ -87,7 +96,7 @@ export default function SignUp() {
           required
         />
         <button type="submit">Sign Up</button>
-        {error && <p>{error}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>
   );
