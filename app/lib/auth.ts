@@ -74,26 +74,6 @@ export const auth: AuthOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // expires after 30 days
   },
-  cookies: {
-    sessionToken: {
-      name: "next-auth.session-token",
-      options: {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: 30 * 24 * 60 * 60, // expires after 30 days
-      },
-    },
-    csrfToken: {
-      name: "next-auth.csrf-token",
-      options: {
-        httpOnly: true,
-        secure: true,
-        sameSite: "strict",
-        maxAge: 30 * 24 * 60 * 60, // expires after 30 days
-      },
-    },
-  },
   callbacks: {
     async session({ session, token }) {
       // Attach the user ID to the session
