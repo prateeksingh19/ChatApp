@@ -72,7 +72,7 @@ export default function SignupPage() {
             </svg>
             <input
               type="text"
-              className="grow text-black focus:outline-none focus:border-black"
+              className="grow text-black focus:outline-none focus:border-black placeholder:text-black"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -90,24 +90,37 @@ export default function SignupPage() {
             </svg>
             <input
               type="text"
-              className="grow"
+              className="grow text-black focus:outline-none focus:border-black placeholder:text-black"
               placeholder="Username"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
           </label>
-          <select
-            className="select select-bordered w-full bg-[#F5F5DC] border-black focus:outline-none focus:border-black text-black"
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-          >
-            <option disabled selected>
-              Select your gender?
-            </option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
+          <div className="form-control">
+            <div className="flex items-center gap-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  className="radio radio-sm"
+                  checked={gender === "Male"}
+                  onChange={() => setGender("Male")}
+                />
+                <span className="text-black ml-2">Male</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  className="radio radio-sm"
+                  checked={gender === "Female"}
+                  onChange={() => setGender("Female")}
+                />
+                <span className="text-black ml-2">Female</span>
+              </label>
+            </div>
+          </div>
           <label className="input input-bordered flex items-center gap-2 bg-[#F5F5DC] border-black focus:outline-none focus:border-black">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +136,7 @@ export default function SignupPage() {
             </svg>
             <input
               type="password"
-              className="grow bg-[#F5F5DC] text-black border-none focus:outline-none focus:border-black"
+              className="grow placeholder:text-black bg-[#F5F5DC] text-black border-none focus:outline-none focus:border-black"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -145,7 +158,7 @@ export default function SignupPage() {
             </svg>
             <input
               type="password"
-              className="grow bg-[#F5F5DC] text-black border-none focus:outline-none focus:border-black"
+              className="grow placeholder:text-black bg-[#F5F5DC] text-black border-none focus:outline-none focus:border-black"
               placeholder="Confirm Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -155,6 +168,17 @@ export default function SignupPage() {
           <input type="submit" className="btn w-1/2 mx-auto block" />
           {error && <p className="text-red-500 text-center mt-2">{error}</p>}
         </form>
+        <div className="flex gap-x-1 mt-2 justify-center text-black">
+          <div>Already have an account?</div>
+          <div
+            className="cursor-pointer font-semibold"
+            onClick={() => {
+              router.push("/auth/login");
+            }}
+          >
+            Login
+          </div>
+        </div>
       </div>
     </div>
   );

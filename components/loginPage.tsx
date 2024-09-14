@@ -34,7 +34,7 @@ export default function LoginPage() {
           <h2 className="text-2xl font-bold text-[#1D232A]">Login Page</h2>
         </div>
         <form
-          className="flex flex-col gap-y-3"
+          className="flex flex-col gap-y-3 form-control"
           action=""
           onSubmit={handleLogin}
         >
@@ -50,7 +50,7 @@ export default function LoginPage() {
             </svg>
             <input
               type="text"
-              className="grow text-black focus:outline-none focus:border-black"
+              className="grow text-black focus:outline-none focus:border-black placeholder:text-black"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +72,7 @@ export default function LoginPage() {
             </svg>
             <input
               type="password"
-              className="grow bg-[#F5F5DC] text-black border-none focus:outline-none focus:border-black"
+              className="grow placeholder:text-black bg-[#F5F5DC] text-black border-none focus:outline-none focus:border-black"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -82,6 +82,17 @@ export default function LoginPage() {
           <input type="submit" className="btn w-1/2 mx-auto block" />
           {error && <p className="text-red-500 text-center mt-2">{error}</p>}
         </form>
+        <div className="flex gap-x-1 mt-2 justify-center text-black">
+          <div>Create account?</div>
+          <div
+            className="cursor-pointer font-semibold"
+            onClick={() => {
+              router.push("/auth/signup");
+            }}
+          >
+            Signup
+          </div>
+        </div>
       </div>
     </div>
   );
