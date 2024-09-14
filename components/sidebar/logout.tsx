@@ -9,7 +9,7 @@ export default function Logout() {
     router.push("/auth/login");
   };
   return (
-    <div className="mt-auto">
+    <div className="">
       <BiLogOut className="w-8 h-8 cursor-pointer" onClick={handleLogout} />
     </div>
   );

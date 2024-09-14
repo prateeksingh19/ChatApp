@@ -4,17 +4,19 @@ import Searchbox from "./searchbox";
 
 export default function Sidebar() {
   return (
-    <div className="p-4">
+    <div className="flex flex-col p-4">
       <Searchbox />
       <div className="divider px-3"></div>
-      <div className="flex flex-col overflow-auto mb-10">
+      <div className="flex flex-col overflow-auto">
         <Conversation />
         <Conversation />
         <Conversation />
         <Conversation />
         <Conversation />
       </div>
-      <Logout />
+      <div className="mt-auto pb-4">
+        <Logout />
+      </div>
     </div>
   );
 }
