@@ -16,6 +16,8 @@ export async function GET() {
       name: true,
       email: true,
       id: true,
+      gender: true,
+      profilePic: true,
     },
   });
   return NextResponse.json(filteredUsers, { status: 200 });
