@@ -1,6 +1,8 @@
+"use client";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const [check, setCheck] = useState(true);
@@ -9,7 +11,7 @@ export default function SignupPage() {
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,14 +24,18 @@ export default function SignupPage() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setIsSubmitting(true);
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
 
     if (!check) {
-      setError("Passwords do not match. Please try again.");
+      toast.error("Passwords do not match. Please try again.");
+      setIsSubmitting(false);
       return;
     }
 
     try {
+      await delay(200);
       const result = await signIn("credentials", {
         redirect: false,
         email,
@@ -40,12 +46,15 @@ export default function SignupPage() {
       });
 
       if (result?.error) {
-        setError(result.error);
+        toast.error(result.error);
       } else {
+        toast.success("Signed up successfully!");
         router.push("/");
       }
     } catch (error) {
-      setError("An error occurred during sign up. Please try again.");
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -165,8 +174,19 @@ export default function SignupPage() {
               required
             />
           </label>
-          <input type="submit" className="btn w-1/2 mx-auto block" />
-          {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+          {isSubmitting ? (
+            <div className="btn w-1/2 mx-auto btn-square flex justify-center items-center">
+              <span className="loading loading-spinner"></span>
+            </div>
+          ) : (
+            <button
+              type="submit"
+              className="btn w-1/2 mx-auto block"
+              disabled={isSubmitting}
+            >
+              Signup
+            </button>
+          )}
         </form>
         <div className="flex gap-x-1 mt-2 justify-center text-black">
           <div>Already have an account?</div>

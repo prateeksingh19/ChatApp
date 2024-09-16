@@ -77,8 +77,8 @@ export const auth: AuthOptions = {
   callbacks: {
     async session({ session, token }) {
       // Attach the user ID to the session
-      if (token.id) {
-        session.user.id = token.id; // Add user ID to the session
+      if (session.user) {
+        session.user.id = token.id as string;
       }
       return session;
     },
