@@ -15,9 +15,12 @@ const conversationSlice = createSlice({
     setMessages: (state, action) => {
       state.messages = action.payload;
     },
+    resetConversationState(state) {
+      state.selectedConversation = initialState.selectedConversation;
+    },
   },
 });
 
-export const { setSelectedConversation, setMessages } =
+export const { setSelectedConversation, setMessages, resetConversationState } =
   conversationSlice.actions;
 export default conversationSlice.reducer;
