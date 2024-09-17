@@ -27,7 +27,12 @@ export default function Message({ key, message }: MessageProps) {
     <div className="">
       <div className={`chat ${chatClass}`}>
         <div className="chat-header mr-3 ml-2 mb-1">
-          {sender ? "You" : `${selectedConversation.name}`}
+          {sender
+            ? "You"
+            : `${
+                selectedConversation.name[0].toUpperCase() +
+                selectedConversation.name.slice(1)
+              }`}
         </div>
         <div className={`chat-bubble ${chatColor}`}>{message.message}</div>
         <div className="chat-footer opacity-50 mt-1">

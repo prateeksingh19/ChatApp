@@ -4,10 +4,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { FiSend } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
+import { useSession } from "next-auth/react";
 
 export default function MessageInput() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+  const { data: session } = useSession();
   const selectedConversation = useSelector(
     (state: any) => state.conversation.selectedConversation
   );
@@ -22,8 +24,22 @@ export default function MessageInput() {
     try {
       await axios.post(`/api/messages/send/${selectedConversation.id}`, {
         message,
+        senderId: session?.user?.id,
       });
-      dispatch(setMessages([...messages, message]));
+
+      dispatch(
+        setMessages([
+          ...messages,
+          {
+            senderId: session?.user?.id,
+            receiverId: selectedConversation.id,
+            message,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            conversationId: selectedConversation.id,
+          },
+        ])
+      );
       setMessage("");
       toast.success("Message sent successfully");
     } catch (error) {
