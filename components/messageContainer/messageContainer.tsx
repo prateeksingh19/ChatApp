@@ -27,7 +27,6 @@ export default function MessageContainer() {
             `/api/messages/${selectedConversation.id}`
           );
           dispatch(setMessages(res.data));
-          console.log(res.data);
         } catch (error) {
           toast.error("Error retrieving messages");
         }

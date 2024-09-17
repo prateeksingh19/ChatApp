@@ -41,7 +41,6 @@ export default function MessageInput() {
         ])
       );
       setMessage("");
-      toast.success("Message sent successfully");
     } catch (error) {
       toast.error("Error while sending message");
     }
