@@ -1,47 +1,54 @@
 "use client";
+import toast from "react-hot-toast";
 import Conversation from "./conversation";
 import Logout from "./logout";
 import Searchbox from "./searchbox";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSelectedConversation } from "@/store/conversationSlice";
 
 interface ConversationProps {
-  key: string;
   id: string;
   name: string;
   profilePic: string;
 }
 
 export default function Sidebar() {
-  const [conversation, setConversation] = useState<ConversationProps[] | null>(
-    null
-  );
+  const [conversations, setConversations] = useState<
+    ConversationProps[] | null
+  >(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    async function fetchConversation() {
+    async function fetchConversations() {
       try {
         const result = await axios.get<ConversationProps[]>("/api/user");
-        setConversation(result.data);
+        setConversations(result.data);
       } catch (error) {
-        console.error("Failed to fetch conversation:", error);
+        toast.error("Failed to get conversations");
       }
     }
-    fetchConversation();
+    fetchConversations();
   }, []);
-  console.log(conversation);
+
+  const handleSelectConversation = (conversation: ConversationProps) => {
+    dispatch(setSelectedConversation(conversation));
+  };
 
   return (
     <div className="flex flex-col p-8 w-1/3">
       <Searchbox />
       <div className="divider px-3"></div>
       <div className="flex flex-col overflow-auto">
-        {conversation && conversation.length > 0 ? (
-          conversation.map((conv) => (
+        {conversations && conversations.length > 0 ? (
+          conversations.map((conversation) => (
             <Conversation
-              key={conv.id}
-              id={conv.id}
-              name={conv.name}
-              profilePic={conv.profilePic}
+              key={conversation.id}
+              id={conversation.id}
+              name={conversation.name}
+              profilePic={conversation.profilePic}
+              onSelect={() => handleSelectConversation(conversation)}
             />
           ))
         ) : (
