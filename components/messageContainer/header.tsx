@@ -1,11 +1,20 @@
-"use client";
-import { useSession } from "next-auth/react";
+import { useSelector } from "react-redux";
 
 export default function Header() {
-  const session = useSession();
+  const selectedConversation = useSelector(
+    (state: any) => state.conversation.selectedConversation
+  );
+
   return (
-    <div className="bg-slate-500 px-8 py-4 mb-2 text-xl text-gray-900 font-bold">
-      {session.data?.user?.name}
+    <div>
+      {selectedConversation ? (
+        <div className="bg-slate-500 px-8 py-4 mb-2 text-xl text-gray-900 font-bold">
+          {selectedConversation.name[0].toUpperCase() +
+            selectedConversation.name.slice(1)}
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

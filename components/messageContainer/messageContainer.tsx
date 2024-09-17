@@ -5,11 +5,13 @@ import Message from "./message";
 import "./index.css";
 import { TiMessages } from "react-icons/ti";
 import { useSession } from "next-auth/react";
+import { useSelector } from "react-redux";
 
 export default function MessageContainer() {
   const session = useSession();
-
-  const noChatSelected = false;
+  const selectedConversation = useSelector(
+    (state: any) => state.conversation.selectedConversation
+  );
   const NoChatSelected = () => {
     return (
       <div className="flex items-center justify-center w-full h-full">
@@ -25,7 +27,7 @@ export default function MessageContainer() {
     <div className="flex flex-col abcd w-screen">
       <Header />
       <div className="flex-1 overflow-auto p-4">
-        {noChatSelected ? (
+        {!selectedConversation ? (
           <NoChatSelected />
         ) : (
           <div>
@@ -42,7 +44,7 @@ export default function MessageContainer() {
           </div>
         )}
       </div>
-      {!noChatSelected && <MessageInput />}
+      {selectedConversation && <MessageInput />}
     </div>
   );
 }
