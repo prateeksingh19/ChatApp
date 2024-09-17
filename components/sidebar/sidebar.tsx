@@ -55,7 +55,7 @@ export default function Sidebar() {
           <p>No conversations available</p>
         )}
       </div>
-      <div className="mt-auto pb-4">
+      <div className="mt-auto pb-2">
         <Logout />
       </div>
     </div>

@@ -32,7 +32,7 @@ export default function MessageInput() {
   }
 
   return (
-    <div className="m-4">
+    <div className="m-4 mb-8">
       <form onSubmit={sendMessage}>
         <label className="input input-bordered flex items-center gap-2">
           <input

@@ -79,16 +79,14 @@ export const auth: AuthOptions = {
   },
   callbacks: {
     async session({ session, token }) {
-      // Attach the user ID to the session
       if (session.user) {
         session.user.id = token.id as string;
       }
       return session;
     },
     async jwt({ token, user }) {
-      // Attach the user ID to the token if user object is available (during login)
       if (user) {
-        token.id = user.id; // Assuming `user.id` is the DB user ID
+        token.id = user.id;
       }
       return token;
     },
